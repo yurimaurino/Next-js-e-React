@@ -3,7 +3,7 @@ import QuestaoModel from "../model/questao";
 import Questionario from "../components/Questionario";
 import { useRouter } from "next/router";
 
-const BASE_URL = 'https://https://next-js-e-react-yuri-maurino-borges-projects.vercel.app/api'
+const BASE_URL = 'https://next-js-e-react-yuri-maurino-borges-projects.vercel.app/api'
 
 export default function Home() {
 
