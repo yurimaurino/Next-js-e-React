@@ -28,14 +28,14 @@ export default function Autenticacao() {
 
   return (
     <div className={`flex h-screen items-center justify-center`}>
-      <div className="hidden md:block md:w-1/2 lg:2/3">
+      <div className="hidden md:block md:w-1/2 lg:w-2/3">
         <img
           src="https://picsum.photos/600/600"
           alt="Imagem  da Tela de Autenticação"
           className="h-screen w-full object-cover"
         />
       </div>
-      <div className={`m-10 md:w-1/2 lg:1/3`}>
+      <div className={`m-10 md:w-1/2 lg:w-1/3`}>
         <h1 className={`
         flex justify-center
         text-2xl font-semibold mb-5
