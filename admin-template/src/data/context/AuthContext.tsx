@@ -7,6 +7,7 @@ import Cookies from 'js-cookie'
 interface AuthContextProps {
   usuario?: Usuario
   loginGoogle?: () => Promise<void>
+  logout?: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextProps>({})
@@ -54,23 +55,41 @@ export function AuthProvider(props) {
   }
 
   async function loginGoogle() {
-    const resp = await firebase.auth().signInWithPopup(
-      new firebase.auth.GoogleAuthProvider()
-    )
+    try {
+      setCarregando(true)
+      const resp = await firebase.auth().signInWithPopup(
+        new firebase.auth.GoogleAuthProvider()
+      )
 
-    configurarSecao(resp.user)
-    router.push('/')
+      configurarSecao(resp.user)
+      router.push('/')
+    } finally {
+      setCarregando(false)
+    }
+  }
+
+  async function logout() {
+    try {
+      setCarregando(true)
+      await firebase.auth().signOut()
+      await configurarSecao(null)
+    } finally {
+      setCarregando(false)
+    }
   }
 
   useEffect(() => {
-    const cancelar = firebase.auth().onIdTokenChanged(configurarSecao)
-    return () => cancelar()
+    if(Cookies.get('admin-template-auth')){
+      const cancelar = firebase.auth().onIdTokenChanged(configurarSecao)
+      return () => cancelar()
+    }
   }, [])
 
   return (
     <AuthContext.Provider value={{
       usuario,
-      loginGoogle
+      loginGoogle,
+      logout
     }}>
       {props.children}
     </AuthContext.Provider>
