@@ -1,5 +1,6 @@
 import Link from "next/link";
 import useAuth from "../../data/hook/useAuth";
+import Image from "next/image";
 
 interface AvatarUsuarioProps {
   className?: string
@@ -9,7 +10,7 @@ export default function AvatarUsuario(props: AvatarUsuarioProps) {
   const { usuario } = useAuth()
   return (
     <Link href={'/perfil'}>
-      <img 
+      <Image 
         src={usuario?.imagemUrl ?? '/images/avatar.svg'} 
         alt="Avatar do Usuário" 
         className={`
