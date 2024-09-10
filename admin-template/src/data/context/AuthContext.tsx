@@ -7,6 +7,8 @@ import Cookies from 'js-cookie'
 interface AuthContextProps {
   usuario?: Usuario
   carregando?: boolean
+  cadastrar?: (email: string, senha: string) => Promise<void>
+  login?: (email: string, senha: string) => Promise<void>
   loginGoogle?: () => Promise<void>
   logout?: () => Promise<void>
 }
@@ -27,7 +29,7 @@ async function usuarioNormalizado(usuarioFirebase: firebase.User): Promise<Usuar
 
 function gerenciarCookie(logado: boolean) {
   if (logado) {
-    Cookies.set('admin-template-auth', logado, {
+    Cookies.set('admin-template-auth', 'true', {
       expires: 7
     })
   } else {
@@ -36,11 +38,11 @@ function gerenciarCookie(logado: boolean) {
 
 }
 
-export function AuthProvider(props) {
+export function AuthProvider(props: any) {
   const [carregando, setCarregando] = useState(true)
   const [usuario, setUsuario] = useState<Usuario>()
 
-  async function configurarSecao(usuarioFirebase) {
+  async function configurarSecao(usuarioFirebase: firebase.User | null) {
     if (usuarioFirebase?.email) {
       const usuario = await usuarioNormalizado(usuarioFirebase)
       setUsuario(usuario)
@@ -55,6 +57,32 @@ export function AuthProvider(props) {
     }
   }
 
+  async function login(email, senha) {
+    try {
+      setCarregando(true)
+      const resp = await firebase.auth()
+        .signInWithEmailAndPassword(email, senha)
+
+      await configurarSecao(resp.user)
+      router.push('/')
+    } finally {
+      setCarregando(false)
+    }
+  }
+  
+  async function cadastrar(email, senha) {
+    try {
+      setCarregando(true)
+      const resp = await firebase.auth()
+        .createUserWithEmailAndPassword(email, senha)
+
+      await configurarSecao(resp.user)
+      router.push('/')
+    } finally {
+      setCarregando(false)
+    }
+  }
+
   async function loginGoogle() {
     try {
       setCarregando(true)
@@ -62,7 +90,7 @@ export function AuthProvider(props) {
         new firebase.auth.GoogleAuthProvider()
       )
 
-      configurarSecao(resp.user)
+      await configurarSecao(resp.user)
       router.push('/')
     } finally {
       setCarregando(false)
@@ -92,6 +120,8 @@ export function AuthProvider(props) {
     <AuthContext.Provider value={{
       usuario,
       carregando,
+      login,
+      cadastrar,
       loginGoogle,
       logout
     }}>
