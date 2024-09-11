@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function Autenticacao() {
 
-  const { cadastrar, login, loginGoogle} = useAuth()
+  const { cadastrar, login, loginGoogle } = useAuth()
 
   const [erro, setErro] = useState(null)
   const [modo, setModo] = useState<'login' | 'cadastro'>('login')
@@ -26,7 +26,7 @@ export default function Autenticacao() {
       } else {
         await cadastrar(email, senha)
       }
-    } catch(e) {
+    } catch (e) {
       exibirErro(e?.message ?? 'Erro Desconhecido')
     }
   }
@@ -49,7 +49,7 @@ export default function Autenticacao() {
       `}>
           {modo === 'login' ? 'Entre com a Sua Conta' : 'Cadastre-se na Plataforma'}
         </h1>
-          {erro ? (
+        {erro ? (
           <div className={`
             flex items-center 
             bg-red-400 text-white py-3 px-5 my-2
@@ -58,7 +58,7 @@ export default function Autenticacao() {
             {WarningIcon}
             <span className="ml-3">{erro}</span>
           </div>
-          ) : false}
+        ) : false}
 
         <AuthInput
           label="Email"
@@ -86,9 +86,20 @@ export default function Autenticacao() {
         <hr className={`my-6 border-gray-300 w-full`} />
 
         <button onClick={loginGoogle} className={`
-        w-full bg-red-500 hover:bg-red-400
-        text-white rounded-lg px-4 py-3
+        flex justify-center items-center
+        w-full bg-red-700 hover:bg-red-400
+        text-white rounded-lg p-4 
       `}>
+          <Image
+            width={30}
+            height={30}
+            unoptimized
+            src={'/images/googleLogo.svg'}
+            alt="Logo do Google"
+            className={`
+              mx-2 items-center justify-center
+            `}
+          />
           Entrar com o Google
         </button>
 

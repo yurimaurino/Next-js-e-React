@@ -1,4 +1,4 @@
-// Correto para arquivo `.mjs`
+// next.config.mjs
 export default {
   reactStrictMode: true,
   images: {
@@ -6,6 +6,12 @@ export default {
       {
         protocol: 'https',
         hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
         port: '',
         pathname: '/**',
       },
