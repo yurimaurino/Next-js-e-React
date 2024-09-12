@@ -6,6 +6,17 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    {
+      pattern: /^bg-/,
+    },
+    {
+      pattern: /^to-/,
+    },
+    {
+      pattern: /^from-/,
+    },
+  ],
   theme: {
     extend: {
       colors: {
@@ -16,4 +27,5 @@ const config: Config = {
   },
   plugins: [],
 };
+
 export default config;
